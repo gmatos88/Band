@@ -1,12 +1,11 @@
 package pe.edu.utp.bands.models.Services;
 
 import pe.edu.utp.bands.models.DAO.CountriesEntity;
+import pe.edu.utp.bands.models.DAO.UsersEntity;
 import pe.edu.utp.bands.models.DAO.UsersTypesEntity;
 import pe.edu.utp.bands.models.DTO.User;
-import pe.edu.utp.bands.models.DAO.UsersEntity;
 
 import java.sql.Connection;
-import java.util.List;
 
 public class UserService {
     private Connection connection;

@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersEntity extends BaseEntity{
-    private static String bd    = "bands";
+public class UsersEntity extends BaseEntity {
+    private static String bd    = "band";
     private static String table = "users";
-    private static String DEFAULT_SQL = "SELECT * FROM " + bd + "." + table;
+    private static String DEFAULT_SQL = "SELECT * FROM " + bd + "." + table + " ";
     //    General Method to executeQuery
     private List<User> findByCriteria(String sql,
                                       UsersTypesEntity usersTypesEntity,
@@ -29,7 +29,7 @@ public class UsersEntity extends BaseEntity{
                     user.setEmail(resultSet.getString("email"));
 
                     user.setFirstname(resultSet.getString("first_name"));
-                    user.setLastname(resultSet.getString("las_tname"));
+                    user.setLastname(resultSet.getString("last_name"));
 
                     user.setType(usersTypesEntity.findById(resultSet.getInt("type")));
                     user.setCountry(countriesEntity.findById(resultSet.getInt("country")));
@@ -67,7 +67,7 @@ public class UsersEntity extends BaseEntity{
                 DEFAULT_SQL +
                         "WHERE id = " +
                         String.valueOf(id)
-        ,usersTypesEntity, countriesEntity);
+                ,usersTypesEntity, countriesEntity);
         return (users != null ? users.get(0) : null);
     }
     //    Find by Name Method
@@ -75,7 +75,7 @@ public class UsersEntity extends BaseEntity{
         List<User> users = findByCriteria(
                 DEFAULT_SQL +
                         " WHERE user_name = '" + username + "'"
-        , usersTypesEntity, countriesEntity);
+                , usersTypesEntity, countriesEntity);
         return  (users.isEmpty()) ? null : users.get(0);
     }
     //    Create user
@@ -103,10 +103,10 @@ public class UsersEntity extends BaseEntity{
     }
     // LogIn Method
     public User logIn(String username, String password, UsersTypesEntity usersTypesEntity, CountriesEntity countriesEntity){
-        List<User> users = findByCriteria(
-                DEFAULT_SQL +
-                        " WHERE user_name = '" + username + "' AND" +
-                        "   password = '" + password + "'"
+        String sql = DEFAULT_SQL + "WHERE " +
+                "user_name = '"+username+"' AND " +
+                "password = "+password;
+        List<User> users = findByCriteria(sql
                 , usersTypesEntity, countriesEntity);
         return (users.isEmpty()) ? null : users.get(0);
     }

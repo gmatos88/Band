@@ -1,17 +1,16 @@
 package pe.edu.utp.bands.models.DAO;
 
 import pe.edu.utp.bands.models.DTO.Country;
-import pe.edu.utp.bands.models.DTO.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CountriesEntity extends BaseEntity{
-    private static String bd    = "bands";
+public class CountriesEntity extends BaseEntity {
+    private static String bd    = "band";
     private static String table = "countries";
-    private static String DEFAULT_SQL = "SELECT * FROM " + bd + "." + table;
+    private static String DEFAULT_SQL = "SELECT * FROM " + bd + "." + table + " ";
 
     //    General Method to executeQuery
     private List<Country> findByCriteria(String sql) {
