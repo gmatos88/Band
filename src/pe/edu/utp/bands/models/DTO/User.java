@@ -7,82 +7,84 @@ public class User {
     private String email;
     private String password;
 
-    private String name;
+    private String firstname;
     private String lastname;
 
-    private int status;
-    private int type;
-
+    private UserType type;
+    private Country country;
 
     public User() {
-    }
-
-    public User(int id, String username) {
-        this.id = id;
-        this.username = username;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public User setId(int id) {
         this.id = id;
+        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public User setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public User setFirstname(String firstname) {
+        this.firstname = firstname;
+        return this;
     }
 
     public String getLastname() {
         return lastname;
     }
 
-    public void setLastname(String lastname) {
+    public User setLastname(String lastname) {
         this.lastname = lastname;
+        return this;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getType() {
+    public UserType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public User setType(UserType type) {
         this.type = type;
+        return this;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public User setCountry(Country country) {
+        this.country = country;
+        return this;
     }
 }
