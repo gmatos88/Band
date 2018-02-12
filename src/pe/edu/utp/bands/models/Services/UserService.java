@@ -1,5 +1,7 @@
 package pe.edu.utp.bands.models.Services;
 
+import pe.edu.utp.bands.models.DAO.CountriesEntity;
+import pe.edu.utp.bands.models.DAO.UsersTypesEntity;
 import pe.edu.utp.bands.models.DTO.User;
 import pe.edu.utp.bands.models.DAO.UsersEntity;
 
@@ -9,6 +11,8 @@ import java.util.List;
 public class UserService {
     private Connection connection;
     private UsersEntity usersEntity;
+    private CountriesEntity countriesEntity;
+    private UsersTypesEntity usersTypesEntity;
 
     //    Patron FACADE
     public Connection getConnection() {
@@ -30,28 +34,29 @@ public class UserService {
         return usersEntity;
     }
 
-    public List<User> findAllRegions(){
-        return getUsersEntity() != null ?
-                getUsersEntity().findAll() : null;
+    public CountriesEntity getCountriesEntity(){
+        if (getConnection() != null){
+            if (countriesEntity == null){
+                countriesEntity = new CountriesEntity();
+                countriesEntity.setConnection(getConnection());
+            }
+        }
+        return countriesEntity;
     }
 
-    public User findRegionById(int id){
-        return getUsersEntity() != null ?
-                getUsersEntity().findById(id) : null;
+    public UsersTypesEntity getUsersTypesEntity(){
+        if (getConnection() != null){
+            if (usersTypesEntity == null){
+                usersTypesEntity = new UsersTypesEntity();
+                usersTypesEntity.setConnection(getConnection());
+            }
+        }
+        return usersTypesEntity;
     }
 
-    public User createRegion(String username, String password, String email, String name, String lastname){
+    public User logIn(String username, String password){
         return getUsersEntity() != null ?
-                getUsersEntity().create(username, password, email, name, lastname) : null;
+                getUsersEntity().logIn(username, password, getUsersTypesEntity(), getCountriesEntity()) : null;
     }
 
-    public boolean deleteRegion(int id){
-        return getUsersEntity() != null ?
-                getUsersEntity().delete(id) : false;
-    }
-
-    public boolean updateRegion(User user){
-        return getUsersEntity() != null ?
-                getUsersEntity().update(user) : false;
-    }
 }
