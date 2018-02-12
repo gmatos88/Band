@@ -1,4 +1,4 @@
-package pe.edu.utp.bands.models;
+package pe.edu.utp.bands.models.DAO;
 
 import java.sql.Connection;
 //Base Entity

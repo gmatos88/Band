@@ -1,4 +1,6 @@
-package pe.edu.utp.bands.models;
+package pe.edu.utp.bands.models.DAO;
+
+import pe.edu.utp.bands.models.DTO.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

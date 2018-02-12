@@ -1,9 +1,6 @@
 package pe.edu.utp.bands.controllers;
 
-import pe.edu.utp.bands.models.UserService;
-import pe.edu.utp.bands.models.User;
-
-import com.sun.xml.internal.bind.v2.TODO;
+import pe.edu.utp.bands.models.Services.UserService;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

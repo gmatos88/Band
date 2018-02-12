@@ -1,4 +1,7 @@
-package pe.edu.utp.bands.models;
+package pe.edu.utp.bands.models.Services;
+
+import pe.edu.utp.bands.models.DTO.User;
+import pe.edu.utp.bands.models.DAO.UsersEntity;
 
 import java.sql.Connection;
 import java.util.List;
