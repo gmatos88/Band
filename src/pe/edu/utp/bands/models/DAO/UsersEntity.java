@@ -12,7 +12,9 @@ public class UsersEntity extends BaseEntity{
     private static String table = "users";
     private static String DEFAULT_SQL = "SELECT * FROM " + bd + "." + table;
     //    General Method to executeQuery
-    private List<User> findByCriteria(String sql) {
+    private List<User> findByCriteria(String sql,
+                                      UsersTypesEntity usersTypesEntity,
+                                      CountriesEntity countriesEntity) {
         List<User> users;
         if(getConnection() != null) {
             users = new ArrayList<>();
@@ -22,15 +24,15 @@ public class UsersEntity extends BaseEntity{
                     User user = new User();
 
                     user.setId(resultSet.getInt("id"));
-                    user.setUsername(resultSet.getString("username"));
+                    user.setUsername(resultSet.getString("user_name"));
                     user.setPassword(resultSet.getString("password"));
                     user.setEmail(resultSet.getString("email"));
 
-                    user.setName(resultSet.getString("name"));
-                    user.setLastname(resultSet.getString("lastname"));
+                    user.setFirstname(resultSet.getString("first_name"));
+                    user.setLastname(resultSet.getString("las_tname"));
 
-                    user.setStatus(resultSet.getInt("status"));
-                    user.setType(resultSet.getInt("type"));
+                    user.setType(usersTypesEntity.findById(resultSet.getInt("type")));
+                    user.setCountry(countriesEntity.findById(resultSet.getInt("country")));
 
                     users.add(user);
                 }
@@ -56,65 +58,57 @@ public class UsersEntity extends BaseEntity{
         return 0;
     }
     //    Find All Method
-    public List<User> findAll(){
-        return findByCriteria(DEFAULT_SQL);
+    public List<User> findAll(UsersTypesEntity usersTypesEntity, CountriesEntity countriesEntity){
+        return findByCriteria(DEFAULT_SQL, usersTypesEntity, countriesEntity);
     }
     //    Find by Id Method
-    public User findById(int id){
+    public User findById(int id, UsersTypesEntity usersTypesEntity, CountriesEntity countriesEntity){
         List<User> users = findByCriteria(
                 DEFAULT_SQL +
                         "WHERE id = " +
                         String.valueOf(id)
-        );
+        ,usersTypesEntity, countriesEntity);
         return (users != null ? users.get(0) : null);
     }
     //    Find by Name Method
-    public User findByName(String name){
+    public User findByName(String username, UsersTypesEntity usersTypesEntity, CountriesEntity countriesEntity){
         List<User> users = findByCriteria(
                 DEFAULT_SQL +
-                        " WHERE name = '" + name + "'"
-        );
+                        " WHERE user_name = '" + username + "'"
+        , usersTypesEntity, countriesEntity);
         return  (users.isEmpty()) ? null : users.get(0);
     }
-    //    Find MaxId
-    private int getMaxId(){
-        String sql = "SELECT MAX(id) AS max_id FROM "+table;
-        if (getConnection() != null){
-            try {
-                ResultSet resultSet = getConnection()
-                        .createStatement()
-                        .executeQuery(sql);
-                return resultSet.next() ?
-                        resultSet.getInt(1) : 0;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return 0;
-    }
     //    Create user
-    public User create(String username, String password, String email, String name, String lastname){
-        if (findByName(username) == null){
+    public User create(String username, String email, String password, String firstName, String lastName,
+                       UsersTypesEntity usersTypesEntity, CountriesEntity countriesEntity){
+        if (findByName(username,usersTypesEntity, countriesEntity) == null){
             if (getConnection() != null){
-                String sql = "INSERT INTO "+table+"(id, username, password, email, name, lastname, status, type) " +
-                        "VALUES(" + String.valueOf(getMaxId() + 1) + ", '" +
-                        username + "' , '"+password+"','"+email+"','"+name+"','"+lastname+"', '1', '1'";
+                String sql = "INSERT INTO "+table+"(user_name, email, password , type,first_name,last_name,) " +
+                        "VALUES('" +
+                        username + "' , '"+email+"','"+password+"','1','"+firstName+"','"+lastName+"'";
                 int results = updateByCriteria(sql);
                 if (results > 0){
                     User user = new User();
-                    user.setId(getMaxId());
                     user.setUsername(username);
                     user.setPassword(password);
                     user.setEmail(email);
-                    user.setName(name);
-                    user.setLastname(lastname);
-                    user.setStatus(1);
-                    user.setStatus(1);
+                    user.setFirstname(firstName);
+                    user.setLastname(lastName);
+                    user.setType(usersTypesEntity.findById(1));
                     return user;
                 }
             }
         }
         return null;
+    }
+    // LogIn Method
+    public User logIn(String username, String password, UsersTypesEntity usersTypesEntity, CountriesEntity countriesEntity){
+        List<User> users = findByCriteria(
+                DEFAULT_SQL +
+                        " WHERE user_name = '" + username + "' AND" +
+                        "   password = '" + password + "'"
+                , usersTypesEntity, countriesEntity);
+        return (users.isEmpty()) ? null : users.get(0);
     }
     //    Delete by Id
     public boolean delete(int id){
